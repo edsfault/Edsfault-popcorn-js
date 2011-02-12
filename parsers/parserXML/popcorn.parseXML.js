@@ -17,17 +17,43 @@
         manifestData = {};
 
     // Simple function to convert 0:05 to 0.5 in seconds
-    // acceptable formats are HH:MM:SS:MM, MM:SS:MM, SS:MM, SS
+    // acceptable formats are:
+	//Without frame info, in order of detail
+	//   SS
+	//   SS:MMM
+	//   MM:SS:MMM
+	//   HH:MM:SS:MMM
+	//With frame info, in order of detail:
+	//   SS F/FR
+	//   SS:MMM F/FR
+	//   MM:SS:MMM F/FR
+	//   HH:MM:SS:MMM F/FR
     var toSeconds = function(time) {
-      var t = time.split(":");
-      if (t.length === 1) {
-        return parseFloat(t[0], 10);
-      } else if (t.length === 2) {
-        return parseFloat(t[0], 10) + parseFloat(t[1] / 12, 10);
-      } else if (t.length === 3) {
-        return parseInt(t[0] * 60, 10) + parseFloat(t[1], 10) + parseFloat(t[2] / 12, 10);
-      } else if (t.length === 4) {
-        return parseInt(t[0] * 3600, 10) + parseInt(t[1] * 60, 10) + parseFloat(t[2], 10) + parseFloat(t[3] / 12, 10);
+	
+	  var unitArr = time.split( ' ' ) ;
+	  var frameInfo = 0.0000 ;
+	  
+	  if ( unitArr[1] ) {
+		var frameArr = (unitArr[1]).split('/') ;
+		frameInfo = ( 1.00 * frameArr[0] ) / frameArr[1] ;
+	  }
+	  
+      var t = unitArr[0].split(":");
+      if (t.length === 1)
+	  {
+        return frameInfo + parseFloat(t[0], 10);
+      }
+	  else if (t.length === 2)
+	  {
+        return frameInfo + parseFloat(t[0], 10) + parseFloat(t[1] / 12, 10);
+      }
+	  else if (t.length === 3)
+	  {
+        return frameInfo + parseInt(t[0] * 60, 10) + parseFloat(t[1], 10) + parseFloat(t[2] / 12, 10);
+      }
+	  else if (t.length === 4)
+	  {
+        return frameInfo + parseInt(t[0] * 3600, 10) + parseInt(t[1] * 60, 10) + parseFloat(t[2], 10) + parseFloat(t[3] / 12, 10);
       }
     };
 
