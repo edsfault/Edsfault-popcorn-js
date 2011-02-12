@@ -35,7 +35,7 @@
 	  
 	  if ( unitArr[1] ) {
 		var frameArr = (unitArr[1]).split('/') ;
-		frameInfo = ( 1.00 * frameArr[0] ) / frameArr[1] ;
+		frameInfo = parseFloat( frameArr[0] / frameArr[1] , 10 ) ;
 	  }
 	  
       var t = unitArr[0].split(":");
